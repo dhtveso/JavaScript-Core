@@ -1,5 +1,5 @@
 function greeting(name) {
-    let greetingMsg = `Hello, ${name}, I am JavaScript!`
+    let greetingMsg = `Hello, ${name}, I am JavaScript!`;
     
     console.log(greetingMsg)
 }
