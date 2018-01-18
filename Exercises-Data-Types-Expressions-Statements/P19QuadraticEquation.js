@@ -1,7 +1,5 @@
-function quadraticEquation(arr) {
-    let a = arr[0];
-    let b = arr[1];
-    let c = arr[2];
+function quadraticEquation(a, b ,c) {
+    
 
     let d = Math.pow(b,2) - (4 * a * c);
 
@@ -19,4 +17,4 @@ function quadraticEquation(arr) {
     }
 }
 
-quadraticEquation([6, 11, -35]);
+quadraticEquation(6, 11, -35);

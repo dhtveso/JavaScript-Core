@@ -1,11 +1,12 @@
-function compoundInterest(arr) {
-    let principalSum = arr[0];
-    let nominalInterest = arr[1];
-    let compoundingFrequency = arr[2] / 100;
-    let overallLength = arr[3];
+function interest(input) {
 
-    let totalAccumulatedValue = principalSum * Math.pow((1 + nominalInterest / compoundingFrequency), compoundingFrequency * overallLength);
-    console.log(totalAccumulatedValue);
+    let principal = Number(input[0]);
+    let interest = Number(input[1]) / 100;    
+    let periodPerYear = 12 / Number(input[2]);
+    let time = Number(input[3]);
+
+    let total = principal * (Math.pow(1 + (interest / period), ( period * time)));
+    console.log(total.toFixed(2));
 }
 
-compoundInterest([1500, 4.3, 3, 6]);
+interest([1500, 4.3, 3, 6]);
