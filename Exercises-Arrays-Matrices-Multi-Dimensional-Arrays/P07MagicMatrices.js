@@ -8,7 +8,7 @@ function sumRowCol(arr) {
     let colSum = matrix.reduce((a, b) => a.map((x, i) => x + b[i]));
     
     magic = Array.from(new Set(rowSum));
-    magic = Array.from(new Set(colSum));
+    magic -= Array.from(new Set(colSum));
 
     if (magic.length === 1) {
         console.log('true');
