@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <p id="content">This is some text (this must be extracted) not this (but this too)!</p>
+    <script>
+        function solution(id) {
+            let result = [];
+            let text = document.getElementById(id).textContent;
+            let regex = /\((.+?)\)/g;
+            let match = regex.exec(text)
+
+            while (match) {
+                result.push(match[1]);
+
+                match = regex.exec(text);
+            }
+            return result.join(', ')
+        }
+
+        console.log(solution('content'));
+        
+    </script>
+</body>
+</html>

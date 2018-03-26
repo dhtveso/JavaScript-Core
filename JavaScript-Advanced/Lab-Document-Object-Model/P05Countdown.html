@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="time" style="border:3px solid blue; text-align:center; font-size:2em;" disabled="true"/>
+    <script>window.onload = function() { 
+        countdown(600); 
+        }
+        function countdown(sec){
+                let minutes = Math.floor(sec / 60);
+                let seconds = sec % 60;
+                let time = minutes + ':' +
+                (seconds < 10 ? '0' + seconds : seconds)
+                document.getElementById('time').value = time;
+            setInterval(() => {
+                sec--;
+                minutes = Math.floor(sec / 60);
+                seconds = sec % 60;
+                time = minutes + ':' +
+                (seconds < 10 ? '0' + seconds : seconds)
+                document.getElementById('time').value = time;
+            }, 1000)
+        }
+        </script>
+
+</body>
+</html>
