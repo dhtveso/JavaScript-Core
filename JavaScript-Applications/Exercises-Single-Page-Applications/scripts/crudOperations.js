@@ -46,12 +46,13 @@ function singInUser(res, message) {
 }
 
 function createAd() {
-    let title = $('input[name=title]').val();
+    let title = $('#formCreateAd input[name=title]').val();
     let publisher = sessionStorage.getItem('username')
-    let description = $('textarea[name=description]').val();
-    let price = $('input[name=price]').val();
-    let dateOfPublishing = $('input[name=datePublished]').val();
-    let data = {title, publisher, description, price, dateOfPublishing}
+    let description = $('#formCreateAd textarea[name=description]').val();
+    let price = $('#formCreateAd input[name=price]').val();
+    let dateOfPublishing = $('#formCreateAd input[name=datePublished]').val();
+    let imgPath = $('#formCreateAd input[name=imgPath]').val();
+    let data = {title, publisher, description, price, dateOfPublishing, imgPath}
     $.ajax({
         method: 'POST',
         url: BASE_URL + 'appdata/' + APP_KEY + '/adverts',
@@ -81,7 +82,8 @@ function editAd() {
     let description = $('#formEditAd textarea[name=description]').val();
     let price = $('#formEditAd input[name=price]').val();
     let dateOfPublishing = $('#formEditAd input[name=datePublished]').val();
-    let data = {title, publisher, description, price, dateOfPublishing}
+    let imgPath = $('#formEditAd input[name=imgPath]').val();
+    let data = {title, publisher, description, price, dateOfPublishing, imgPath}
     $.ajax({
         method: 'PUT',
         url: BASE_URL + 'appdata/' + APP_KEY + '/adverts/' + id,
@@ -136,20 +138,23 @@ function createTr(ad) {
                       .append(`<td>${ad.description}`)
                       .append(`<td>${ad.price}`)
                       .append(`<td>${ad.dateOfPublishing}`)
+    let td = $('<td>')
+    let readMoreTag = $('<a href="#">[Read more]</a>').on('click', function () {
+        readMore(ad)
+    })
 
-            if (ad._acl.creator === sessionStorage.getItem('id')) {
-                let td = $('<td>')
-                let edit =   $('<a href="#">[Edit]</a>').on('click', function () {
-                    loadAdForEdit(ad)
-                });
-                let deleteATag = $('<a href="#">[Delete]</a>').on('click', function () {
-                    deleteAd(ad)
-                })
+    td.append(readMoreTag)
+        if (ad._acl.creator === sessionStorage.getItem('id')) {
 
-                td.append(edit)
-                td.append(deleteATag);
-                tr.append(td)
-            }
-
+            let edit =   $('<a href="#">[Edit]</a>').on('click', function () {
+                loadAdForEdit(ad)
+            });
+            let deleteATag = $('<a href="#">[Delete]</a>').on('click', function () {
+                deleteAd(ad)
+            })
+            td.append(edit)
+            td.append(deleteATag);
+        }
+        tr.append(td)
     $('#ads table').append(tr)
 }

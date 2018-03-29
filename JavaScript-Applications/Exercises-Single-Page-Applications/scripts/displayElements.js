@@ -70,11 +70,30 @@ function showError(errorMsg) {
 
 function loadAdForEdit(ad) {
     showView('viewEditAd')
-    let title = $('#formEditAd input[name=title]').val(ad.title);
-    //let publisher = sessionStorage.getItem('username')
-    let description = $('#formEditAd textarea[name=description]').val(ad.description);
-    let price = $('#formEditAd input[name=price]').val(ad.price);
-    let dateOfPublishing = $('#formEditAd input[name=datePublished]').val(ad.dateOfPublishing);
+    $('#formEditAd input[name=title]').val(ad.title);
+    $('#formEditAd textarea[name=description]').val(ad.description);
+    $('#formEditAd input[name=price]').val(ad.price);
+    $('#formEditAd input[name=datePublished]').val(ad.dateOfPublishing);
     $('#formEditAd input[name=id]').val(ad._id)
-    //let data = {title, publisher, description, price, dateOfPublishing}
+    $('#formEditAd input[name=imgPath]').val(ad.imgPath);
+}
+
+function readMore(ad) {
+    $('#listSingleAd').empty()
+    let adInfo = $('<div>').append(
+        $('br'),
+        $(`<div><img src="${ad.imgPath}"/></div>`),
+        $('br'),
+        $('<label>').text('Title:'),
+        $('<h1>').text(ad.title),
+        $('<label>').text('Description:'),
+        $('<p>').text(ad.description),
+        $('<label>').text('Publisher:'),
+        $('<div>').text(ad.publisher),
+        $('<label>').text('Date:'),
+        $('<div>').text(ad.dateOfPublishing),
+    )
+    $('#listSingleAd').append(adInfo)
+    showView('listSingleAd')
+
 }
