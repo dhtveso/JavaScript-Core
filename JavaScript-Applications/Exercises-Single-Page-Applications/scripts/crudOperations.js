@@ -2,7 +2,7 @@ const BASE_URL = 'https://baas.kinvey.com/'
 const APP_KEY = 'kid_SykldXKqf' //TODO Add app_key
 const APP_SECRET = 'ee5b61123aca4bd8a7470fd2f429b98f' //TODO Add App_secret
 const AUTH_HEADERS = { 'Authorization': "Basic " + btoa(APP_KEY + ":" + APP_SECRET) }
-const ADS_PER_PAGE = 10;
+const ADS_PER_PAGE = 12;
 
 function registerUser() {
     let username = $('#formRegister input[name=username]').val();
@@ -52,7 +52,15 @@ function createAd() {
     let price = $('#formCreateAd input[name=price]').val();
     let dateOfPublishing = $('#formCreateAd input[name=datePublished]').val();
     let imgPath = $('#formCreateAd input[name=imgPath]').val();
-    let data = {title, publisher, description, price, dateOfPublishing, imgPath}
+    let counter = 0;
+    let checkValid = checkIsValid(title, price);
+
+    if (checkValid.length > 0) {
+        showError(checkValid)
+        return
+    }
+
+    let data = {title, publisher, description, price, dateOfPublishing, imgPath, counter}
     $.ajax({
         method: 'POST',
         url: BASE_URL + 'appdata/' + APP_KEY + '/adverts',
@@ -121,7 +129,9 @@ function displayPaginationAndBooks(adverts) {
         next: 'Next',
         prev: 'Prev',
         onPageClick: function (event, page) {
-            $('#ads > table tr:not(:first-child').remove();
+            //$('#ads > table tr:not(:first-child').remove();
+            $('#ads table').remove();
+            $('#ads>div').remove();
             let startad = (page - 1) * ADS_PER_PAGE
             let endad = Math.min(startad + ADS_PER_PAGE, adverts.length)
             $(`a:contains(${page})`).addClass('active')
@@ -133,28 +143,51 @@ function displayPaginationAndBooks(adverts) {
 }
 
 function createTr(ad) {
-    let tr = $('<tr>').append(`<td>${ad.title}`)
-                      .append(`<td>${ad.publisher}`)
-                      .append(`<td>${ad.description}`)
-                      .append(`<td>${ad.price}`)
-                      .append(`<td>${ad.dateOfPublishing}`)
-    let td = $('<td>')
-    let readMoreTag = $('<a href="#">[Read more]</a>').on('click', function () {
+    let div = $('<div>')
+            .addClass('ad-box')
+            .append(`<div class="ad-title">${ad.title}</div>`)
+            .append(`<div><img src="${ad.imgPath}"></div>`)
+            .append(`<div>Price: ${Number(ad.price).toFixed(2)} By: ${ad.publisher}</div>`)
+
+    // let tr = $('<tr>').append(`<td>${ad.title}`)
+    //                   .append(`<td>${ad.publisher}`)
+    //                   .append(`<td>${ad.description}`)
+    //                   .append(`<td>${ad.price}`)
+    //                   .append(`<td>${ad.dateOfPublishing}`)
+    let innerDiv = $('<div>')
+    let readMoreTag = $('<a class="readMore" href="#">Read more</a>').on('click', function () {
         readMore(ad)
     })
 
-    td.append(readMoreTag)
+    innerDiv.append(readMoreTag)
         if (ad._acl.creator === sessionStorage.getItem('id')) {
 
-            let edit =   $('<a href="#">[Edit]</a>').on('click', function () {
+            let edit =   $('<a class="editButton" href="#">Edit</a>').on('click', function () {
                 loadAdForEdit(ad)
             });
-            let deleteATag = $('<a href="#">[Delete]</a>').on('click', function () {
+            let deleteATag = $('<a class="deleteButton" href="#">Delete</a>').on('click', function () {
                 deleteAd(ad)
             })
-            td.append(edit)
-            td.append(deleteATag);
+            innerDiv.append(edit)
+            innerDiv.append(deleteATag);
         }
-        tr.append(td)
-    $('#ads table').append(tr)
+        div.append(innerDiv)
+    $('#ads').append(div)
+}
+
+function checkIsValid(title, price) {
+    let regex = /^-?\d+\.?\d*$/g;
+
+    if (title.length < 5) {
+        return 'Title must be at least 5 char'
+    }
+    if (!regex.test(price)) {
+        return "Price is not a number"
+    }
+
+    if (Number(price) <= 0) {
+        return "Price must be greater than 0"
+    }
+
+    return '';
 }
