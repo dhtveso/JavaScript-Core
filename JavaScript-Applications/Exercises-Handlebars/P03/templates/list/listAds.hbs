@@ -1,0 +1,16 @@
+{{#each ads}}
+    <div class="ad-box">
+        <div class="ad-title">{{title}}</div>
+        <div>
+            <img src="{{imgPath}}">
+        </div>
+        <div>Price: {{price}} By: {{publisher}}</div>
+        <div>
+            <a class="readMore" href="#/{{_id}}">Read more</a>
+            {{#if isAuthor}}
+                <a class="editButton" href="#/edit/{{_id}}">Edit</a>
+                <a class="deleteButton" href="#/delete/{{_id}}">Delete</a>
+            {{/if}}
+        </div>
+    </div>
+{{/each}}

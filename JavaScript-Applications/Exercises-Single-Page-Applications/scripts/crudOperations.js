@@ -2,7 +2,7 @@ const BASE_URL = 'https://baas.kinvey.com/'
 const APP_KEY = 'kid_SykldXKqf' //TODO Add app_key
 const APP_SECRET = 'ee5b61123aca4bd8a7470fd2f429b98f' //TODO Add App_secret
 const AUTH_HEADERS = { 'Authorization': "Basic " + btoa(APP_KEY + ":" + APP_SECRET) }
-const ADS_PER_PAGE = 12;
+const ADS_PER_PAGE = 3;
 
 function registerUser() {
     let username = $('#formRegister input[name=username]').val();
@@ -11,7 +11,7 @@ function registerUser() {
         method: 'POST',
         url: BASE_URL + 'user/' + APP_KEY + '/',
         headers: AUTH_HEADERS,
-        data: {username, password}
+        data: { username, password }
     }).then(function (res) {
         singInUser(res, 'Registration successful.')
     }).catch(handleAjaxError)
@@ -23,9 +23,9 @@ function loginUser() {
 
     $.ajax({
         method: 'POST',
-        url:  BASE_URL + 'user/' + APP_KEY + '/login',
+        url: BASE_URL + 'user/' + APP_KEY + '/login',
         headers: AUTH_HEADERS,
-        data: {username, password}
+        data: { username, password }
     }).then(function (res) {
         singInUser(res, 'Login successful.')
     }).catch(handleAjaxError)
@@ -60,7 +60,7 @@ function createAd() {
         return
     }
 
-    let data = {title, publisher, description, price, dateOfPublishing, imgPath, counter}
+    let data = { title, publisher, description, price, dateOfPublishing, imgPath, counter }
     $.ajax({
         method: 'POST',
         url: BASE_URL + 'appdata/' + APP_KEY + '/adverts',
@@ -91,7 +91,7 @@ function editAd() {
     let price = $('#formEditAd input[name=price]').val();
     let dateOfPublishing = $('#formEditAd input[name=datePublished]').val();
     let imgPath = $('#formEditAd input[name=imgPath]').val();
-    let data = {title, publisher, description, price, dateOfPublishing, imgPath}
+    let data = { title, publisher, description, price, dateOfPublishing, imgPath }
     $.ajax({
         method: 'PUT',
         url: BASE_URL + 'appdata/' + APP_KEY + '/adverts/' + id,
@@ -144,10 +144,10 @@ function displayPaginationAndBooks(adverts) {
 
 function createTr(ad) {
     let div = $('<div>')
-            .addClass('ad-box')
-            .append(`<div class="ad-title">${ad.title}</div>`)
-            .append(`<div><img src="${ad.imgPath}"></div>`)
-            .append(`<div>Price: ${Number(ad.price).toFixed(2)} By: ${ad.publisher}</div>`)
+        .addClass('ad-box')
+        .append(`<div class="ad-title">${ad.title}</div>`)
+        .append(`<div><img src="${ad.imgPath}"></div>`)
+        .append(`<div>Price: ${Number(ad.price).toFixed(2)} By: ${ad.publisher}</div>`)
 
     // let tr = $('<tr>').append(`<td>${ad.title}`)
     //                   .append(`<td>${ad.publisher}`)
@@ -160,18 +160,18 @@ function createTr(ad) {
     })
 
     innerDiv.append(readMoreTag)
-        if (ad._acl.creator === sessionStorage.getItem('id')) {
+    if (ad._acl.creator === sessionStorage.getItem('id')) {
 
-            let edit =   $('<a class="editButton" href="#">Edit</a>').on('click', function () {
-                loadAdForEdit(ad)
-            });
-            let deleteATag = $('<a class="deleteButton" href="#">Delete</a>').on('click', function () {
-                deleteAd(ad)
-            })
-            innerDiv.append(edit)
-            innerDiv.append(deleteATag);
-        }
-        div.append(innerDiv)
+        let edit = $('<a class="editButton" href="#">Edit</a>').on('click', function () {
+            loadAdForEdit(ad)
+        });
+        let deleteATag = $('<a class="deleteButton" href="#">Delete</a>').on('click', function () {
+            deleteAd(ad)
+        })
+        innerDiv.append(edit)
+        innerDiv.append(deleteATag);
+    }
+    div.append(innerDiv)
     $('#ads').append(div)
 }
 
